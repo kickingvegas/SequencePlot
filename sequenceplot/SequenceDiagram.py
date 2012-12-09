@@ -6,6 +6,8 @@ import sys
 import os
 import subprocess
 
+from sequenceplot import SyntaxError
+
 class SequenceDiagram:
     """
     Class to configure and render a UML sequence diagram.
@@ -16,15 +18,15 @@ class SequenceDiagram:
     params -- dictionary of UMLGraph pic variables. Use the method setParam(key, value)
               to alter a parameter.
         param keys:
-             boxHeight
-             boxWidth
-             activeWidth
-             messageSpacing
-             objectSpacing
-             dashInterval
-             diagramWidth
-             diagramHeight
-             underline
+             boxHeight - Object box height
+             boxWidth - Object box width
+             activeWidth - Active lifeline width
+             messageSpacing - Spacing between messages
+             objectSpacing - Spacing between objects
+             dashInterval - Interval for dashed lines
+             diagramWidth - Maximum width of diagram
+             diagramHeight - Maximume height of diagram
+             underline - Underline the name of objects
 
     """
 
@@ -32,8 +34,13 @@ class SequenceDiagram:
     transactions = []
     params = {}
     picPath = None
+    frameCount = 0
     
-    def __init__(self):
+    def __init__(self, objects=None):
+
+        if objects:
+            self.addObjects(objects)
+        
         self.params['boxHeight'] = { 'picName': 'boxht',
                                      'value' : 0.3,
                                      'description': 'Object box height'}
@@ -84,8 +91,28 @@ class SequenceDiagram:
             sys.exit(1)
 
 
-    def addTransaction(self, buf):
-        self.transactions.append(buf)
+    def addTransaction(self, operation):
+        """
+        Add pic operation to list of transactions.
+        
+        """
+        self.transactions.append(operation)
+
+
+    def printParams(self):
+        """
+        Generate readable output of params attribute.
+        
+        """
+        bufList = []
+        for key, value in self.params.iteritems():
+            bufList.append('   param Key: {0}'.format(key))
+            bufList.append(' description: {description}'.format(**value))            
+            bufList.append('pic variable: {picName}'.format(**value))
+            bufList.append('       value: {value}'.format(**value))
+            bufList.append('')
+
+        return '\n'.join(bufList)
 
 
     def setParam(self, key, value):
@@ -245,29 +272,34 @@ class SequenceDiagram:
         self.parent.transactions.append(''.join(bufList))
 
 
-    def beginFrame(self, lobject, name, label):
+    def beginFrame(self, lobject, label, steps=1):
         """
-        Begins a frame with the upper left corner at left_object
-        column and the current line. The specified label_text is shown
+        Begins a frame with the upper left corner at lobject
+        column and the current line. The specified label is shown
         in the upper left corner.
+
+        Args:
+        lobject -- left most object to contain in the frame.
 
         Corresponding UMLGraph operation:
             begin_frame(left_object,name,label_text);
 
         """
-        bufList = []
-        bufList.append('begin_frame(')
-        bufList.append(lobject.objectIdentifier())
-        bufList.append(',')
-        bufList.append('F_{0}'.format(name))
-        bufList.append(',')
-        bufList.append('"{0}"'.format(label))
-        bufList.append(');')
+        if steps:
+            self.step(steps)
 
-        self.transactions.append(''.join(bufList))
+        name = 'F_{0}'.format(self.frameCount)
+        self.frameCount = self.frameCount + 1
+
+        template = 'begin_frame({0},{1},"{2}");'
+        buf = template.format(lobject.objectIdentifier(),
+                              name,
+                              label)
+
+        self.addTransaction(buf)
 
 
-    def endFrame(self, robject, name):
+    def endFrame(self, robject, steps=0):
         """
         Ends a frame with the lower right corner at right_object
         column and the current line. The name must correspond to a
@@ -277,15 +309,24 @@ class SequenceDiagram:
             end_frame(right_object,name);
         
         """
-        
-        bufList = []
-        bufList.append('end_frame(')
-        bufList.append(robject.objectIdentifier())
-        bufList.append(',')
-        bufList.append('F_{0}'.format(name))
-        bufList.append(');')
 
-        self.transactions.append(''.join(bufList))
+        if steps:
+            self.step(steps)
+
+        self.frameCount = self.frameCount - 1
+        if self.frameCount < 0:
+            # TODO need to raise a syntax error
+            raise SyntaxError('Unmatched endFrame(). Check for a corresponding beginFrame() call.')
+        else:
+            name = 'F_{0}'.format(self.frameCount)
+            
+
+        template = 'end_frame({0},{1});'
+        buf = template.format(robject.objectIdentifier(),
+                              name)
+
+        self.addTransaction(buf)
+            
         
     def oconstraint(self, label):
         """
