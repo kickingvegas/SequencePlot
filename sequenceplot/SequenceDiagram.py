@@ -3,6 +3,7 @@
 # Author: Charles Y. Choi
 
 import sys
+import os
 import subprocess
 
 class SequenceDiagram:
@@ -30,6 +31,7 @@ class SequenceDiagram:
     objectList = [] 
     transactions = []
     params = {}
+    picPath = None
     
     def __init__(self):
         self.params['boxHeight'] = { 'picName': 'boxht',
@@ -69,6 +71,18 @@ class SequenceDiagram:
                                      'value' : 1,
                                      'description': 'Underline the name of objects'}
 
+        for path in sys.path:
+            testPath = os.path.join(path, 'sequenceplot', 'sequence.pic')
+            if os.path.exists(testPath):
+                self.picPath = testPath
+                break
+            
+        if self.picPath is None:
+            sys.stderr.write('ERROR: Unable to locate file "sequence.pic". '
+                             'Please configure PYTHONPATH to include the module "sequenceplot".\n')
+
+            sys.exit(1)
+
 
     def addTransaction(self, buf):
         self.transactions.append(buf)
@@ -101,7 +115,7 @@ class SequenceDiagram:
     def startPicCode(self):
         bufList = []
         bufList.append('.PS')
-        bufList.append('copy "/opt/UMLGraph/lib/sequence.pic";');
+        bufList.append('copy "{0}";'.format(self.picPath));
 
         for k, v in self.params.iteritems():
             bufList.append('{picName}={value};'.format(**v))
@@ -221,10 +235,6 @@ class SequenceDiagram:
 
         """
         self.transactions.append('sync();')
-
-        
-        
-
 
     def oconstraint(self, label):
         bufList = []
