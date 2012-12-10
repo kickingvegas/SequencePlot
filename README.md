@@ -4,7 +4,7 @@
 
 UML sequence diagrams are useful for describing communication between interacting objects. That said, they are cumbersome to draw and maintain using GUI tools. An alternative approach is to code the interactions which can then be generated into a diagram.
 
-**SequencePlot** is a Python module for using code to generate a UML sequence diagram. The sequence diagram can be rendered in a `svg`, `ps`, or `png` format.
+**SequencePlot** (v0.1) is a Python module for using code to generate a UML sequence diagram. The sequence diagram can be rendered in a `svg`, `ps`, or `png` format.
 
 **SequencePlot** is built on top of the `sequence.pic` macros from [UMLGraph](http://umlgraph.org) which in turn use the [GNU Plotutils](http://www.gnu.org/software/plotutils/plotutils.html) `pic2plot` utility. **SequencePlot** treats the `pic` macros defined in `sequence.pic` as drawing primitives that are more easily controlled via the  object oriented abstractions offered by Python.
 
