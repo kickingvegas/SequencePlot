@@ -41,7 +41,7 @@ The following files will be generated:
 Displayed below is the SVG output of the diagram code above:
 	
 <object style="border-width: 1px; border-style: solid; border-color: black;"
-        data="/home/cchoi/Dropbox/Projects/SequencePlot/Developer/SequencePlot/examples/authentication.svg"
+        data="examples/authentication.svg"
 	type="image/svg+xml">
 </object>
 
