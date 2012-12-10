@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: class SequenceDiagram</title>
+</head><body bgcolor="#f0f0f8">
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><strong>sequenceplot.SequenceDiagram</strong> = <a name="sequenceplot.SequenceDiagram">class SequenceDiagram</a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Class&nbsp;to&nbsp;configure&nbsp;and&nbsp;render&nbsp;a&nbsp;UML&nbsp;sequence&nbsp;diagram.<br>
+&nbsp;<br>
+Attributes:<br>
+objectList&nbsp;--&nbsp;list&nbsp;of&nbsp;sequence&nbsp;objects&nbsp;in&nbsp;the&nbsp;diagram.<br>
+transactions&nbsp;--&nbsp;list&nbsp;of&nbsp;all&nbsp;UMLGraph&nbsp;pic&nbsp;operations.<br>
+frameCount&nbsp;--&nbsp;counter&nbsp;for&nbsp;frames<br>
+params&nbsp;--&nbsp;dictionary&nbsp;of&nbsp;UMLGraph&nbsp;pic&nbsp;variables.&nbsp;Use&nbsp;the&nbsp;method&nbsp;<a href="#sequenceplot.SequenceDiagram-setParam">setParam</a>(key,&nbsp;value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;alter&nbsp;a&nbsp;parameter.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;param&nbsp;keys:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boxHeight&nbsp;-&nbsp;Object&nbsp;box&nbsp;height<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boxWidth&nbsp;-&nbsp;Object&nbsp;box&nbsp;width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activeWidth&nbsp;-&nbsp;Active&nbsp;lifeline&nbsp;width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messageSpacing&nbsp;-&nbsp;Spacing&nbsp;between&nbsp;messages<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objectSpacing&nbsp;-&nbsp;Spacing&nbsp;between&nbsp;objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dashInterval&nbsp;-&nbsp;Interval&nbsp;for&nbsp;dashed&nbsp;lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diagramWidth&nbsp;-&nbsp;Maximum&nbsp;width&nbsp;of&nbsp;diagram<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diagramHeight&nbsp;-&nbsp;Maximume&nbsp;height&nbsp;of&nbsp;diagram<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underline&nbsp;-&nbsp;Underline&nbsp;the&nbsp;name&nbsp;of&nbsp;objects<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="SequenceDiagram-__init__"><strong>__init__</strong></a>(self, objects<font color="#909090">=None</font>)</dt><dd><tt>Constructor&nbsp;for&nbsp;a&nbsp;sequence&nbsp;diagram.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-add"><strong>add</strong></a>(self, obj)</dt><dd><tt>Add&nbsp;SequenceObject&nbsp;instance&nbsp;to&nbsp;the&nbsp;diagram.<br>
+&nbsp;<br>
+Args:<br>
+obj&nbsp;--&nbsp;SequenceObject&nbsp;instance</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-addObjects"><strong>addObjects</strong></a>(self, objList)</dt><dd><tt>Add&nbsp;list&nbsp;of&nbsp;SequenceObject&nbsp;instances&nbsp;to&nbsp;the&nbsp;diagram.<br>
+&nbsp;<br>
+Args:<br>
+objList&nbsp;--&nbsp;list&nbsp;of&nbsp;SequenceObject&nbsp;instances</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-addTransaction"><strong>addTransaction</strong></a>(self, operation)</dt><dd><tt>Add&nbsp;pic&nbsp;operation&nbsp;to&nbsp;list&nbsp;of&nbsp;transactions.<br>
+&nbsp;<br>
+Args:<br>
+operation&nbsp;--&nbsp;pic&nbsp;operation</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-async"><strong>async</strong></a>(self)</dt><dd><tt>All&nbsp;subsequent&nbsp;messages&nbsp;are&nbsp;asynchronous&nbsp;and&nbsp;will&nbsp;be&nbsp;drawn<br>
+correspondingly.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-beginFrame"><strong>beginFrame</strong></a>(self, lobject, label, steps<font color="#909090">=1</font>)</dt><dd><tt>Begins&nbsp;a&nbsp;frame&nbsp;with&nbsp;the&nbsp;upper&nbsp;left&nbsp;corner&nbsp;at&nbsp;lobject<br>
+column&nbsp;and&nbsp;the&nbsp;current&nbsp;line.&nbsp;The&nbsp;specified&nbsp;label&nbsp;is&nbsp;shown<br>
+in&nbsp;the&nbsp;upper&nbsp;left&nbsp;corner.<br>
+&nbsp;<br>
+Args:<br>
+lobject&nbsp;--&nbsp;left&nbsp;most&nbsp;object&nbsp;to&nbsp;contain&nbsp;in&nbsp;the&nbsp;frame.<br>
+&nbsp;<br>
+Corresponding&nbsp;UMLGraph&nbsp;operation:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;begin_frame(left_object,name,label_text);</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-endFrame"><strong>endFrame</strong></a>(self, robject, steps<font color="#909090">=0</font>)</dt><dd><tt>Ends&nbsp;a&nbsp;frame&nbsp;with&nbsp;the&nbsp;lower&nbsp;right&nbsp;corner&nbsp;at&nbsp;right_object<br>
+column&nbsp;and&nbsp;the&nbsp;current&nbsp;line.&nbsp;The&nbsp;name&nbsp;must&nbsp;correspond&nbsp;to&nbsp;a<br>
+begin_frame's&nbsp;name.<br>
+&nbsp;<br>
+Corresponding&nbsp;UMLGraph&nbsp;operation:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end_frame(right_object,name);</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-endPicCode"><strong>endPicCode</strong></a>(self)</dt><dd><tt>Insert&nbsp;finalizing&nbsp;pic&nbsp;operations.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-gif"><strong>gif</strong></a>(self, filenamePrefix)</dt><dd><tt>Convenience&nbsp;method&nbsp;to&nbsp;render&nbsp;diagram&nbsp;in&nbsp;gif&nbsp;format.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-oconstraint"><strong>oconstraint</strong></a>(self, label)</dt><dd><tt>object_constraint(label)<br>
+&nbsp;<br>
+Displays&nbsp;an&nbsp;object&nbsp;constraint&nbsp;(typically&nbsp;given&nbsp;inside&nbsp;curly<br>
+braces)&nbsp;for&nbsp;the&nbsp;last&nbsp;object&nbsp;defined.&nbsp;Can&nbsp;also&nbsp;be&nbsp;written&nbsp;as<br>
+oconstraint.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-png"><strong>png</strong></a>(self, filenamePrefix)</dt><dd><tt>Convenience&nbsp;method&nbsp;to&nbsp;render&nbsp;diagram&nbsp;in&nbsp;PNG&nbsp;format.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-printParams"><strong>printParams</strong></a>(self)</dt><dd><tt>Generate&nbsp;readable&nbsp;output&nbsp;of&nbsp;params&nbsp;attribute.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-ps"><strong>ps</strong></a>(self, filenamePrefix)</dt><dd><tt>Convenience&nbsp;method&nbsp;to&nbsp;render&nbsp;diagram&nbsp;in&nbsp;PostScript&nbsp;format.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-render"><strong>render</strong></a>(self, filenamePrefix, filetype<font color="#909090">='svg'</font>)</dt><dd><tt>Render&nbsp;sequence&nbsp;diagram&nbsp;using&nbsp;call&nbsp;to&nbsp;pic2plot.<br>
+&nbsp;<br>
+Args:<br>
+filenamePrefix&nbsp;--&nbsp;output&nbsp;filename&nbsp;prefix&nbsp;string<br>
+filetype&nbsp;--&nbsp;output&nbsp;format,&nbsp;legal&nbsp;values&nbsp;are&nbsp;those&nbsp;supported&nbsp;by&nbsp;pic2plot</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-run"><strong>run</strong></a>(self, outfile<font color="#909090">=None</font>)</dt><dd><tt>Write&nbsp;out&nbsp;all&nbsp;stored&nbsp;UMLGraph&nbsp;pic&nbsp;operations&nbsp;stored&nbsp;in<br>
+transactions&nbsp;into&nbsp;outfile.&nbsp;If&nbsp;outfile&nbsp;is&nbsp;None,&nbsp;then&nbsp;write&nbsp;to<br>
+stdout.<br>
+&nbsp;<br>
+Args:<br>
+outfile&nbsp;--&nbsp;output&nbsp;file&nbsp;handle</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-setParam"><strong>setParam</strong></a>(self, key, value)</dt><dd><tt>Set&nbsp;parameter&nbsp;key&nbsp;to&nbsp;value.<br>
+&nbsp;<br>
+param&nbsp;keys:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boxHeight&nbsp;-&nbsp;Object&nbsp;box&nbsp;height<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boxWidth&nbsp;-&nbsp;Object&nbsp;box&nbsp;width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activeWidth&nbsp;-&nbsp;Active&nbsp;lifeline&nbsp;width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messageSpacing&nbsp;-&nbsp;Spacing&nbsp;between&nbsp;messages<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objectSpacing&nbsp;-&nbsp;Spacing&nbsp;between&nbsp;objects<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dashInterval&nbsp;-&nbsp;Interval&nbsp;for&nbsp;dashed&nbsp;lines<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diagramWidth&nbsp;-&nbsp;Maximum&nbsp;width&nbsp;of&nbsp;diagram<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diagramHeight&nbsp;-&nbsp;Maximume&nbsp;height&nbsp;of&nbsp;diagram<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underline&nbsp;-&nbsp;Underline&nbsp;the&nbsp;name&nbsp;of&nbsp;objects<br>
+&nbsp;<br>
+&nbsp;<br>
+Args:<br>
+key&nbsp;--&nbsp;parameter&nbsp;key&nbsp;name<br>
+value&nbsp;--&nbsp;value&nbsp;to&nbsp;set&nbsp;for&nbsp;key&nbsp;in&nbsp;params</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-startPicCode"><strong>startPicCode</strong></a>(self)</dt><dd><tt>Insert&nbsp;preliminary&nbsp;pic&nbsp;operations.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-step"><strong>step</strong></a>(self, n<font color="#909090">=1</font>)</dt><dd><tt>Steps&nbsp;the&nbsp;time&nbsp;by&nbsp;a&nbsp;single&nbsp;increment,&nbsp;extending&nbsp;all&nbsp;lifelines.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-svg"><strong>svg</strong></a>(self, filenamePrefix)</dt><dd><tt>Convenience&nbsp;method&nbsp;to&nbsp;render&nbsp;diagram&nbsp;in&nbsp;SVG&nbsp;format.</tt></dd></dl>
+
+<dl><dt><a name="SequenceDiagram-sync"><strong>sync</strong></a>(self)</dt><dd><tt>All&nbsp;subsequent&nbsp;messages&nbsp;are&nbsp;synchronous&nbsp;and&nbsp;will&nbsp;be&nbsp;drawn&nbsp;correspondingly.</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>frameCount</strong> = 0</dl>
+
+<dl><dt><strong>objectList</strong> = []</dl>
+
+<dl><dt><strong>params</strong> = {}</dl>
+
+<dl><dt><strong>picPath</strong> = None</dl>
+
+<dl><dt><strong>transactions</strong> = []</dl>
+
+</td></tr></table>
+</body></html>
