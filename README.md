@@ -37,13 +37,8 @@ The following files will be generated:
 * `sd_authenticate.svg` - UML sequence diagram in SVG format
 * `sd_authenticate.pic` - UML sequence diagram in pic format
 
+[Click to view the SVG output.](http://yms.dyndns.biz/~cchoi/images/authentication.svg)
 
-Displayed below is the SVG output of the diagram code above:
-	
-<object style="border-width: 1px; border-style: solid; border-color: black;"
-        data="http://yms.dyndns.biz/~cchoi/images/authentication.svg"
-	type="image/svg+xml">
-</object>
 
 
 ## Documentation
