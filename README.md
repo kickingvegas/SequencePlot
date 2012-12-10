@@ -41,7 +41,7 @@ The following files will be generated:
 Displayed below is the SVG output of the diagram code above:
 	
 <object style="border-width: 1px; border-style: solid; border-color: black;"
-        data="https://raw.github.com/kickingvegas/SequencePlot/master/examples/authentication.svg"
+        data="http://yms.dyndns.biz/~cchoi/images/authentication.svg"
 	type="image/svg+xml">
 </object>
 
