@@ -28,6 +28,7 @@ class SequenceDiagram:
     Attributes:
     objectList -- list of sequence objects in the diagram.
     transactions -- list of all UMLGraph pic operations.
+    frameCount -- counter for frames
     params -- dictionary of UMLGraph pic variables. Use the method setParam(key, value)
               to alter a parameter.
         param keys:
@@ -47,9 +48,14 @@ class SequenceDiagram:
     transactions = []
     params = {}
     picPath = None
+    # TODO: frameCount is a design bug. Need to replace with stack. 
     frameCount = 0
     
     def __init__(self, objects=None):
+        """
+        Constructor for a sequence diagram.
+        
+        """
 
         if objects:
             self.addObjects(objects)
@@ -107,6 +113,9 @@ class SequenceDiagram:
     def addTransaction(self, operation):
         """
         Add pic operation to list of transactions.
+
+        Args:
+        operation -- pic operation
         
         """
         self.transactions.append(operation)
@@ -132,6 +141,18 @@ class SequenceDiagram:
         """
         Set parameter key to value.
 
+        param keys:
+             boxHeight - Object box height
+             boxWidth - Object box width
+             activeWidth - Active lifeline width
+             messageSpacing - Spacing between messages
+             objectSpacing - Spacing between objects
+             dashInterval - Interval for dashed lines
+             diagramWidth - Maximum width of diagram
+             diagramHeight - Maximume height of diagram
+             underline - Underline the name of objects
+        
+
         Args:
         key -- parameter key name
         value -- value to set for key in params
@@ -141,18 +162,38 @@ class SequenceDiagram:
 
 
     def add(self, obj):
+        """
+        Add SequenceObject instance to the diagram.
+
+        Args:
+        obj -- SequenceObject instance
+        
+        """
         self.objectList.append(obj)
         obj.parent = self
         obj.objectInitialize()
 
     def addObjects(self, objList):
+        """
+        Add list of SequenceObject instances to the diagram.
+
+        Args:
+        objList -- list of SequenceObject instances
+        
+        """
+        
         self.objectList.extend(objList)
 
         for obj in objList:
             obj.parent = self
             obj.objectInitialize()
         
+
     def startPicCode(self):
+        """
+        Insert preliminary pic operations.
+        
+        """
         bufList = []
         bufList.append('.PS')
         bufList.append('copy "{0}";'.format(self.picPath));
@@ -163,6 +204,10 @@ class SequenceDiagram:
         return bufList
 
     def endPicCode(self):
+        """
+        Insert finalizing pic operations.
+        
+        """
         bufList = []
         bufList.append('.PE')
         return bufList
@@ -176,8 +221,6 @@ class SequenceDiagram:
         Args:
         outfile -- output file handle
 
-        TODO: may rename to flush
-        
         """
         for obj in self.objectList:
             obj.complete()
@@ -197,27 +240,15 @@ class SequenceDiagram:
             outfile.write(line)
             outfile.write('\n')
 
-    def plot(self, filename):
-        """
-        TODO: rename to render
-        TODO: support svg, pdf, png, jpg
-        """
-
-        cmdList = []
-        cmdList.append('pic2plot')
-        cmdList.append('-Tsvg')
-        cmdList.append(filename)
-
-        p = subprocess.Popen(cmdList, stdout=subprocess.PIPE)
-
-        #buf = p.stdout.read()
-
-        with open('out.svg', 'w') as outfile:
-            outfile.write(p.stdout.read())
-        
 
     def render(self, filenamePrefix, filetype='svg'):
         """
+        Render sequence diagram using call to pic2plot.
+
+        Args:
+        filenamePrefix -- output filename prefix string
+        filetype -- output format, legal values are those supported by pic2plot
+        
         """
 
         picFilename = filenamePrefix + '.pic'
@@ -237,15 +268,27 @@ class SequenceDiagram:
             outfile.write(p.stdout.read())
 
     def svg(self, filenamePrefix):
+        """
+        Convenience method to render diagram in SVG format.
+        """
         self.render(filenamePrefix, 'svg')
 
     def gif(self, filenamePrefix):
+        """
+        Convenience method to render diagram in gif format.
+        """
         self.render(filenamePrefix, 'gif')
 
     def ps(self, filenamePrefix):
+        """
+        Convenience method to render diagram in PostScript format.
+        """
         self.render(filenamePrefix, 'ps')
         
-    def pngRender(self, filenamePrefix):
+    def png(self, filenamePrefix):
+        """
+        Convenience method to render diagram in PNG format.
+        """
         self.render(filenamePrefix, 'png')
         
             
@@ -350,5 +393,7 @@ class SequenceDiagram:
         oconstraint.
         
         """
-        pass
-    
+        template = 'oconstraint("{0}");'
+
+        buf = template.format(label)
+        self.addTransaction(buf)
