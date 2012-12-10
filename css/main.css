@@ -1,0 +1,44 @@
+
+body { margin: 0pt;
+       padding: 0.5in;
+       font-family: Helvetica;
+       font-size: 12pt; }
+h1 { font-size: 16pt; }
+h2 { font-size: 14pt; }
+h3 { font-size: 12pt; }
+h4 {
+ font-size: 12pt; 
+ font-style: oblique;
+}
+
+table {
+   border-style: solid;
+   border-width: 1px;
+   border-color: grey;
+   width: 80%;
+   }
+   
+td {
+   border-bottom: 1px solid grey;
+   border-right: 1px solid grey;
+}
+
+th {
+   border-bottom: 3px solid black;
+   border-right: 1px solid grey;
+}
+
+pre {
+     background-color: #ECECEC
+}
+
+.break {
+     page-break-before: always;
+}
+
+.seqdia {
+    border-color: black;
+    border-width: thin;
+    border-style: solid;
+}
+
