@@ -22,15 +22,15 @@ class SequenceObject:
     Base class representation of a participant object in a UML sequence diagram.
     
     """
-    def __init__(self, name=None):
+    def __init__(self, label=None):
         """
         Class constructor.
 
         Args:
-        name -- full name of the sequence object. Typical value is 'object_name: class_name'.
+        label -- full label of the sequence object. Typical value is 'object_name: class_name'.
 
         """
-        self.name = name
+        self.label = label
         self.parent = None
         self.activeCount = 0
         
@@ -46,7 +46,7 @@ class SequenceObject:
         
         """
         self.activeCount = self.activeCount + 1
-        buf = 'active({0});'.format(self.objectIdentifier())
+        buf = 'active({0});'.format(self.picName())
         self.parent.addTransaction(buf)
 
         
@@ -63,7 +63,7 @@ class SequenceObject:
         
         """
         if self.activeCount > 0:
-            buf = 'inactive({0});'.format(self.objectIdentifier())
+            buf = 'inactive({0});'.format(self.picName())
             self.parent.addTransaction(buf)
             self.activeCount = self.activeCount - 1
 
@@ -78,11 +78,11 @@ class SequenceObject:
 
         
         """
-        buf = 'delete({0});'.format(self.objectIdentifier())
+        buf = 'delete({0});'.format(self.picName())
         self.parent.addTransaction(buf)
 
         
-    def cmessage(self, target, targetName):
+    def cmessage(self, target, targetLabel):
         """
         Has from_object create the to_object, labeled with
         object_label. The message is labeled with the <<create>>
@@ -92,11 +92,11 @@ class SequenceObject:
             create_message(from_object,to_object,object_label);
         
         """
-        target.name = targetName
+        target.label = targetLabel
         template = 'cmessage({0},{1},"{2}");'
-        buf = template.format(self.objectIdentifier(),
-                              target.objectIdentifier(),
-                              targetName)
+        buf = template.format(self.picName(),
+                              target.picName(),
+                              targetLabel)
         
         self.parent.addTransaction(buf)
 
@@ -113,8 +113,8 @@ class SequenceObject:
         """
         template = 'dmessage({0},{1});'
         
-        buf = template.format(self.objectIdentifier(),
-                              target.objectIdentifier())
+        buf = template.format(self.picName(),
+                              target.picName())
         
         self.parent.addTransaction(buf)
 
@@ -130,8 +130,8 @@ class SequenceObject:
         """
         template = 'message({0},{1},"{2}");'
         
-        buf = template.format(self.objectIdentifier(),
-                              target.objectIdentifier(),
+        buf = template.format(self.picName(),
+                              target.picName(),
                               request)
         
         self.parent.addTransaction(buf)
@@ -150,8 +150,8 @@ class SequenceObject:
         """
         template = 'rmessage({0},{1},"{2}");'
 
-        buf = template.format(self.objectIdentifier(),
-                              target.objectIdentifier(),
+        buf = template.format(self.picName(),
+                              target.picName(),
                               response)
 
         self.parent.addTransaction(buf)
@@ -210,15 +210,15 @@ class SequenceObject:
         """
         template = 'object({0},"{1}");'
 
-        buf = template.format(self.objectIdentifier(),
-                              self.name)
+        buf = template.format(self.picName(),
+                              self.label)
 
         self.parent.addTransaction(buf)
 
 
-    def objectIdentifier(self):
+    def picName(self):
         """
-        Generates UMLGraph name based on python id of the instance of
+        Generates UMLGraph pic name based on python id of the instance of
         this object.
         
         """
@@ -237,7 +237,7 @@ class SequenceObject:
         """
         template = 'complete({0});'
                 
-        buf = template.format(self.objectIdentifier())
+        buf = template.format(self.picName())
         self.parent.addTransaction(buf)
 
 
@@ -254,14 +254,11 @@ class SequenceObject:
             lconstraint(object,label);
         
         """
-        bufList = []
-        bufList.append('lconstraint(')
-        bufList.append(self.objectIdentifier())
-        bufList.append(',')
-        bufList.append('"{0}"'.format(label))
-        bufList.append(');')
+        template = 'lconstraint({0},"{1}");'
+        buf = template.format(self.picName(),
+                              label)
+        self.addTransaction(buf)
 
-        self.parent.transactions.append(''.join(bufList))
 
     def lconstraintBelow(self, label):
         """
@@ -271,13 +268,9 @@ class SequenceObject:
             lconstraint_below(object,label);
         
         """
-        bufList = []
-        bufList.append('lconstraint_below(')
-        bufList.append(self.objectIdentifier())
-        bufList.append(',')
-        bufList.append('"{0}"'.format(label))
-        bufList.append(');')
 
-        self.parent.transactions.append(''.join(bufList))
-
+        template = 'lconstraint_below({0},"{1}");'
+        buf = template.format(self.picName(),
+                              label)
+        self.addTransaction(buf)
         
