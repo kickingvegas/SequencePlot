@@ -403,7 +403,24 @@ class SequenceDiagram:
         self.addTransaction(buf)
 
 
-    def comment(self, obj, lineMovement, boxSize, text):
+    def comment(self, obj, text, lineMovement="", boxSize=""):
+        """
+        Display a comment about an object.
+
+        Args:
+
+        obj -- object to associate comment with
+        text - string containing the comment text
+        lineMovement - pic operation to adjust the comment position
+        boxSize - pic operation to adjust the comment size
+        
+        Returns:
+        name -- pic name of comment instance.
+        
+        Corresponding UMLGraph operation:
+            comment(object,[name],[line_movement],[box_size] text);
+        
+        """
 
         name = self.genPicName()
 
@@ -422,7 +439,7 @@ class SequenceDiagram:
         for line in textList:
             bufList.append('"{0}"'.format(line))
 
-        bufList.append(')')
+        bufList.append(');')
         
         self.addTransaction(''.join(bufList))
 
@@ -430,6 +447,14 @@ class SequenceDiagram:
 
 
     def connectToComment(self, obj, name):
+        """
+        Draw connection from an existing comment to another object.
+
+        Args:
+        obj -- object
+        name -- pic name of comment instance
+        
+        """
         
         template = 'connect_to_comment({0},{1});'
         buf = template.format(obj.picName(),
@@ -439,3 +464,16 @@ class SequenceDiagram:
         
         
          
+    def pic(self, op):
+        """
+        Add raw pic operation to transaction list. There is no syntax
+        checking of pic.
+
+        Args:
+        op -- pic operation
+        
+        """
+        self.addTransaction(op)
+        
+        
+    
