@@ -48,8 +48,7 @@ class SequenceDiagram:
     transactions = []
     params = {}
     picPath = None
-    # TODO: frameCount is a design bug. Need to replace with stack. 
-    frameCount = 0
+    nameIndex = 0
     
     def __init__(self, objects=None):
         """
@@ -320,12 +319,25 @@ class SequenceDiagram:
         self.transactions.append('sync();')
 
     def oconstraint(self, label):
+        """
+        
+        """
         bufList = []
         bufList.append('oconstraint(')
         bufList.append('"{0}"'.format(label))
         bufList.append(');')
 
         self.parent.transactions.append(''.join(bufList))
+
+
+    def genPicName(self):
+        """
+        Generate a new pic name in form N_[0..n].
+
+        """
+        name = 'N_{0}'.format(self.nameIndex)
+        self.nameIndex = self.nameIndex + 1
+        return name
 
 
     def beginFrame(self, lobject, label, steps=1):
@@ -344,18 +356,18 @@ class SequenceDiagram:
         if steps:
             self.step(steps)
 
-        name = 'F_{0}'.format(self.frameCount)
-        self.frameCount = self.frameCount + 1
-
+        name = self.genPicName()
         template = 'begin_frame({0},{1},"{2}");'
-        buf = template.format(lobject.objectIdentifier(),
+        buf = template.format(lobject.picName(),
                               name,
                               label)
 
         self.addTransaction(buf)
 
+        return name
 
-    def endFrame(self, robject, steps=0):
+
+    def endFrame(self, robject, name, steps=0):
         """
         Ends a frame with the lower right corner at right_object
         column and the current line. The name must correspond to a
@@ -369,16 +381,8 @@ class SequenceDiagram:
         if steps:
             self.step(steps)
 
-        self.frameCount = self.frameCount - 1
-        if self.frameCount < 0:
-            # TODO need to raise a syntax error
-            raise SyntaxError('Unmatched endFrame(). Check for a corresponding beginFrame() call.')
-        else:
-            name = 'F_{0}'.format(self.frameCount)
-            
-
         template = 'end_frame({0},{1});'
-        buf = template.format(robject.objectIdentifier(),
+        buf = template.format(robject.picName(),
                               name)
 
         self.addTransaction(buf)
@@ -397,3 +401,41 @@ class SequenceDiagram:
 
         buf = template.format(label)
         self.addTransaction(buf)
+
+
+    def comment(self, obj, lineMovement, boxSize, text):
+
+        name = self.genPicName()
+
+        bufList = []
+        bufList.append('comment(')
+        bufList.append(obj.picName())
+        bufList.append(',')
+        bufList.append(name)
+        bufList.append(',')
+        bufList.append(lineMovement)
+        bufList.append(',')
+        bufList.append(boxSize)
+        bufList.append(' ')
+
+        textList = text.splitlines()
+        for line in textList:
+            bufList.append('"{0}"'.format(line))
+
+        bufList.append(')')
+        
+        self.addTransaction(''.join(bufList))
+
+        return name
+
+
+    def connectToComment(self, obj, name):
+        
+        template = 'connect_to_comment({0},{1});'
+        buf = template.format(obj.picName(),
+                              name)
+
+        self.addTransaction(buf)
+        
+        
+         
