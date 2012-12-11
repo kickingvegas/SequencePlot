@@ -28,12 +28,13 @@ diagram = SequenceDiagram([client, server])
 diagram.setParam('objectSpacing', 1.75)
 
 # Start a frame named 'Login'
-diagram.beginFrame(client, 'Login')
+frameName = diagram.beginFrame(client, 'Login')
 # Have the client call the method "login(username, password)" on the server with then responds with "sessionID, userInfo".
 client.callMethod(server, 'login(username, password)', response='sessionID, userInfo')
 # End the previously declared frame
-diagram.endFrame(server)
+diagram.endFrame(server, frameName)
 
 # Render the diagram into an SVG file named "authentication.svg".
 diagram.svg('authentication')
+
 
