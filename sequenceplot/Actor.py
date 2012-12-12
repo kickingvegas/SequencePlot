@@ -30,7 +30,11 @@ class Actor(SequenceObject):
         
         """
         template = 'actor({0},"{1}");'
+
+        if self.label is None:
+            self.label = ""
+            
         buf = template.format(self.picName(),
-                              self.name)
+                              self.label)
 
         self.parent.addTransaction(buf)
