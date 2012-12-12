@@ -79,6 +79,7 @@ class SequenceObject:
         """
         buf = 'delete({0});'.format(self.picName())
         self.parent.addTransaction(buf)
+        self.parent.objectList.remove(self)
 
         
     def cmessage(self, target, targetLabel):
@@ -159,10 +160,10 @@ class SequenceObject:
     #
     def pushMethod(self, target, request):
         self.parent.step(1)
-        target.active()
         self.parent.sync()
         self.message(target, request)
         self.parent.async()
+        target.active()
 
     def popMethod(self, target, response):
         target.rmessage(self, response)
@@ -170,33 +171,51 @@ class SequenceObject:
         self.parent.step(1)
         
         
-    def callMethod(self, target, request, response=None, steps=0):
+    def callMethod(self, target, request, response=None, steps=0, requestSync=True, responseSync=False):
+        """
+
+        """
 
         self.parent.step(1)
-        target.active()
 
-        self.parent.sync()
+        if requestSync:
+            self.parent.sync()
+        else:
+            self.parent.async()
         self.message(target, request)
-        self.parent.async()
-        
-        if response:
+
+         
+        if response is not None:
+            target.active()
             if steps:
                 self.parent.step(steps)
+            
+            if responseSync:
+                self.parent.sync()
+            else:
+                self.parent.async()
             target.rmessage(self, response)
 
-        target.inactive()
+            target.inactive()
+
         self.parent.step(1)
 
 
-    def createInstance(self, target, instanceName):
-        self.parent.sync()
+    def createInstance(self, target, instanceName, sync=True):
+        if sync:
+            self.parent.sync()
+        else:
+            self.parent.async()
         self.cmessage(target, instanceName)
-        self.parent.async()
 
-    def destroyInstance(self, target):
-        self.parent.sync()
+    def destroyInstance(self, target, sync=True):
+        if sync:
+            self.parent.sync()
+        else:
+            self.parent.async()
         self.dmessage(target)
-        self.parent.async()
+            
+        self.parent.objectList.remove(target)
         
 
     def picObjectInit(self):
@@ -256,7 +275,7 @@ class SequenceObject:
         template = 'lconstraint({0},"{1}");'
         buf = template.format(self.picName(),
                               label)
-        self.addTransaction(buf)
+        self.parent.addTransaction(buf)
 
 
     def lconstraintBelow(self, label):
