@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 # Author: Charles Y. Choi
-
 import sys
 
 class SequenceObject:
@@ -200,7 +199,7 @@ class SequenceObject:
         self.parent.async()
         
 
-    def objectInitialize(self):
+    def picObjectInit(self):
         """
         Defines an object with the given name, labeled on the diagram as specified.
 

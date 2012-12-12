@@ -21,7 +21,7 @@ class Actor(SequenceObject):
     """
     This class represents an actor object in a UML sequence diagram.
     """
-    def objectInitialize(self):
+    def picObjectInit(self):
         """
         Instantiates an actor object instance in the diagram.
 
@@ -30,7 +30,7 @@ class Actor(SequenceObject):
         
         """
         template = 'actor({0},"{1}");'
-        buf = template.format(self.objectIdentifier(),
+        buf = template.format(self.picName(),
                               self.name)
 
         self.parent.addTransaction(buf)

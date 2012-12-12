@@ -170,7 +170,7 @@ class SequenceDiagram:
         """
         self.objectList.append(obj)
         obj.parent = self
-        obj.objectInitialize()
+        obj.picObjectInit()
 
     def addObjects(self, objList):
         """
@@ -185,7 +185,7 @@ class SequenceDiagram:
 
         for obj in objList:
             obj.parent = self
-            obj.objectInitialize()
+            obj.picObjectInit()
         
 
     def startPicCode(self):

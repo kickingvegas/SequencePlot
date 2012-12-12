@@ -23,7 +23,7 @@ class Placeholder(SequenceObject):
     
     """
 
-    def objectInitialize(self):
+    def picObjectInit(self):
         """
         Declares placeholder object in sequence diagram.
 
@@ -31,6 +31,6 @@ class Placeholder(SequenceObject):
             placeholder_object(name);
             
         """
-        buf = 'pobject({0});'.format(self.objectIdentifier())
+        buf = 'pobject({0});'.format(self.picName())
         self.parent.transactions.append(buf)
 
