@@ -49,6 +49,7 @@ class SequenceDiagram:
     params = {}
     picPath = None
     nameIndex = 0
+    drawSync = True
     
     def __init__(self, objects=None):
         """
@@ -269,31 +270,54 @@ class SequenceDiagram:
     def svg(self, filenamePrefix):
         """
         Convenience method to render diagram in SVG format.
+
+        Args:
+        filenamePrefix -- string of prefix to use to generate output file
+        
         """
         self.render(filenamePrefix, 'svg')
 
     def gif(self, filenamePrefix):
         """
         Convenience method to render diagram in gif format.
+
+        Args:
+        filenamePrefix -- string of prefix to use to generate output file
+        
         """
         self.render(filenamePrefix, 'gif')
 
     def ps(self, filenamePrefix):
         """
         Convenience method to render diagram in PostScript format.
+
+        Args:
+        filenamePrefix -- string of prefix to use to generate output file
+
         """
         self.render(filenamePrefix, 'ps')
         
     def png(self, filenamePrefix):
         """
         Convenience method to render diagram in PNG format.
+
+        Args:
+        filenamePrefix -- string of prefix to use to generate output file
+
         """
         self.render(filenamePrefix, 'png')
         
             
     def step(self, n=1):
         """
-        Steps the time by a single increment, extending all lifelines.
+        Visually step (or space) the time by n, extending all lifelines.
+
+        Args:
+        n -- number of UMLGraph pic macro steps to make.
+
+        Corresponding UMLGraph operation:
+            step();
+            
         
         """
         count = 0;
@@ -307,27 +331,43 @@ class SequenceDiagram:
         """
         All subsequent messages are asynchronous and will be drawn
         correspondingly.
+
+        Corresponding UMLGraph operation:
+            async();
         
         """
-        self.transactions.append('async();')
+        if self.drawSync:
+            self.transactions.append('async();')
+            self.drawSync = False
                 
     def sync(self):
         """
         All subsequent messages are synchronous and will be drawn correspondingly.
 
+        Corresponding UMLGraph operation:
+            sync();
+
         """
-        self.transactions.append('sync();')
+        if not self.drawSync:
+            self.transactions.append('sync();')
+            self.drawSync = True
 
     def oconstraint(self, label):
         """
+        Displays an object constraint (typically given inside curly
+        braces) for the last object defined.
+
+        Args:
+        label -- constraint text
+
+        Corresponding UMLGraph operation:
+            oconstraint(label);
         
         """
-        bufList = []
-        bufList.append('oconstraint(')
-        bufList.append('"{0}"'.format(label))
-        bufList.append(');')
+        template = 'oconstraint("{0}");'
 
-        self.parent.transactions.append(''.join(bufList))
+        buf = template.format(label)
+        self.addTransaction(buf)
 
 
     def genPicName(self):
@@ -388,20 +428,6 @@ class SequenceDiagram:
         self.addTransaction(buf)
             
         
-    def oconstraint(self, label):
-        """
-        object_constraint(label)
-
-        Displays an object constraint (typically given inside curly
-        braces) for the last object defined. Can also be written as
-        oconstraint.
-        
-        """
-        template = 'oconstraint("{0}");'
-
-        buf = template.format(label)
-        self.addTransaction(buf)
-
 
     def comment(self, obj, text, lineMovement="", boxSize=""):
         """
