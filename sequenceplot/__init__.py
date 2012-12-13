@@ -19,7 +19,7 @@
 sequenceplot is a module that generates UML sequence diagrams using the UMLGraph package.
 
 """
-__version__ = '0.1'
+__version__ = '0.2'
 
 class SyntaxError(Exception):
     def __init__(self, value):
