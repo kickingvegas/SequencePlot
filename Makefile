@@ -17,13 +17,26 @@
 
 
 PYTHONPATH=${PWD}
+
+exampleDiagrams:
+	cd examples; PYTHONPATH=${PYTHONPATH} python authentication.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python nestedActivation.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python concurrentProcessesActivations.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python createDestroy.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python lifelineConstraints.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python externalActor.py
+	cd examples; PYTHONPATH=${PYTHONPATH} python comment.py
+
+regression:
+	cd tests; PYTHONPATH=${PYTHONPATH} python -m unittest test_SequenceDiagram.TestSequenceDiagram
+
 docs:
 	make -C doc
 
 
 clean:
 	cd sequenceplot; rm -f *~ *.pyc
-	cd examples; rm -f *.pic *.svg
+	cd examples; rm -f *.pic *.svg *~
 	cd doc; rm -f *.html
 
 
