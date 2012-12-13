@@ -28,7 +28,8 @@ a1 = Placeholder()
 a2 = Placeholder()
 
 diagram = SequenceDiagram([x, t, c, a1, a2])
-diagram.setParam('boxWidth', 1.3)
+diagram.setParam('boxWidth', 1.0)
+diagram.setParam('diagramWidth', 14)
 
 x.createInstance(t, "a:Transaction", sync=False)
 t.active()
