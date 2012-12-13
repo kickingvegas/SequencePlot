@@ -92,7 +92,4 @@ class PicParams:
         return bufList
     
         
-if __name__ == '__main__':
-    z = PicParams()
-    
         
