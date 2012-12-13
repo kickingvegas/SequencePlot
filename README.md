@@ -15,7 +15,7 @@ UML sequence diagrams are useful for describing communication between interactin
 
 ## Release Notes (v0.2)
 
-This code is stable enough to draw sequence diagrams. 
+This code is stable enough to draw sequence diagrams. That said, it is still a work in progress.
 
 ### TODO
 
