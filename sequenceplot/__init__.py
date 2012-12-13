@@ -19,7 +19,7 @@
 sequenceplot is a module that generates UML sequence diagrams using the UMLGraph package.
 
 """
-__version__ = '0.2'
+__version__ = '0.3'
 
 class SyntaxError(Exception):
     def __init__(self, value):
@@ -28,6 +28,12 @@ class SyntaxError(Exception):
     def __str__(self):
         return repr(self.value)
 
+
+def picEscapeString(buf):
+    result = buf.replace('"', '\\"')
+    return result
+
+    
 
 from SequenceObject import SequenceObject
 from Placeholder import Placeholder

@@ -19,7 +19,7 @@ import sys
 import os
 import subprocess
 
-from sequenceplot import SyntaxError
+from sequenceplot import SyntaxError, picEscapeString
 
 class SequenceDiagram:
     """
@@ -366,7 +366,7 @@ class SequenceDiagram:
         """
         template = 'oconstraint("{0}");'
 
-        buf = template.format(label)
+        buf = template.format(picEscapeString(label))
         self.addTransaction(buf)
 
 
@@ -400,7 +400,7 @@ class SequenceDiagram:
         template = 'begin_frame({0},{1},"{2}");'
         buf = template.format(lobject.picName(),
                               name,
-                              label)
+                              picEscapeString(label))
 
         self.addTransaction(buf)
 
@@ -463,7 +463,8 @@ class SequenceDiagram:
 
         textList = text.splitlines()
         for line in textList:
-            bufList.append('"{0}"'.format(line))
+            escapedLine = picEscapeString(line)
+            bufList.append('"{0}"'.format(escapedLine))
 
         bufList.append(');')
         
@@ -500,6 +501,3 @@ class SequenceDiagram:
         
         """
         self.addTransaction(op)
-        
-        
-    

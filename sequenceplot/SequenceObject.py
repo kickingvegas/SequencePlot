@@ -16,6 +16,8 @@
 # Author: Charles Y. Choi
 import sys
 
+from sequenceplot import picEscapeString
+
 class SequenceObject:
     """
     Base class representation of a participant object in a UML sequence diagram.
@@ -96,7 +98,7 @@ class SequenceObject:
         template = 'cmessage({0},{1},"{2}");'
         buf = template.format(self.picName(),
                               target.picName(),
-                              targetLabel)
+                              picEscapeString(targetLabel))
         
         self.parent.addTransaction(buf)
 
@@ -132,7 +134,7 @@ class SequenceObject:
         
         buf = template.format(self.picName(),
                               target.picName(),
-                              request)
+                              picEscapeString(request))
         
         self.parent.addTransaction(buf)
         
@@ -152,7 +154,7 @@ class SequenceObject:
 
         buf = template.format(self.picName(),
                               target.picName(),
-                              response)
+                              picEscapeString(response))
 
         self.parent.addTransaction(buf)
 
@@ -229,7 +231,7 @@ class SequenceObject:
         template = 'object({0},"{1}");'
 
         buf = template.format(self.picName(),
-                              self.label)
+                              picEscapeString(self.label))
 
         self.parent.addTransaction(buf)
 
@@ -274,7 +276,7 @@ class SequenceObject:
         """
         template = 'lconstraint({0},"{1}");'
         buf = template.format(self.picName(),
-                              label)
+                              picEscapeString(label))
         self.parent.addTransaction(buf)
 
 
@@ -289,6 +291,6 @@ class SequenceObject:
 
         template = 'lconstraint_below({0},"{1}");'
         buf = template.format(self.picName(),
-                              label)
+                              picEscapeString(label))
         self.addTransaction(buf)
         

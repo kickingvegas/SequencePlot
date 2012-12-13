@@ -44,7 +44,7 @@ p.active()
 diagram.step()
 p.inactive()
 
-t.message(p, 'setValues(a, \\"CO\\")')
+t.message(p, 'setValues(a, "CO")')
 p.active()
 diagram.step()
 p.inactive()
