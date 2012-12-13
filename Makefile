@@ -38,5 +38,6 @@ clean:
 	cd sequenceplot; rm -f *~ *.pyc
 	cd examples; rm -f *.pic *.svg *~
 	cd doc; rm -f *.html
+	cd tests; rm -f *~ *.pyc
 
 
