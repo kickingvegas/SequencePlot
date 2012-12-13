@@ -159,15 +159,39 @@ class SequenceObject:
         self.parent.addTransaction(buf)
 
 
-    #
-    def pushMethod(self, target, request):
+    def pushMethod(self, target, request, sync=True):
+        """
+        Call method on the target object such that the target is active until a subsequent popMethod() is called to finalize the transaction.
+
+        Args:
+        target -- target object to call method on
+        request -- request string
+        sync -- if True, the request line is synchronous (default True)
+        
+        """
         self.parent.step(1)
-        self.parent.sync()
+
+        if sync:
+            self.parent.sync()
+        else:
+            self.parent.async()
         self.message(target, request)
-        self.parent.async()
         target.active()
 
-    def popMethod(self, target, response):
+    def popMethod(self, target, response, sync=False):
+        """
+        Complete method call first invoked by pushMethod(), drawing the response. 
+        
+        Args:
+        target -- target object to call method on
+        response -- response string
+        sync -- if True, the request line is synchronous (default False
+        
+        """
+        if sync:
+            self.parent.sync()
+        else:
+            self.parent.async()
         target.rmessage(self, response)
         target.inactive()
         self.parent.step(1)
