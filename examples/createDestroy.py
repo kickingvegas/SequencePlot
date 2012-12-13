@@ -27,8 +27,8 @@ t = Placeholder()
 p = SequenceObject('p:ODBCProxy')
 
 diagram = SequenceDiagram([c, t, p])
-diagram.setParam('boxWidth', 1.1)
-diagram.setParam('objectSpacing', 0.5)
+diagram.params.boxWidth = 1.1
+diagram.params.objectSpacing = 0.5
 
 diagram.step()
 c.active()
