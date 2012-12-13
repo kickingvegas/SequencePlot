@@ -20,6 +20,7 @@ import os
 import subprocess
 
 from sequenceplot import SyntaxError, picEscapeString
+from PicParams import PicParams
 
 class SequenceDiagram:
     """
@@ -46,7 +47,7 @@ class SequenceDiagram:
 
     objectList = [] 
     transactions = []
-    params = {}
+    params = PicParams()
     picPath = None
     nameIndex = 0
     drawSync = True
@@ -59,43 +60,6 @@ class SequenceDiagram:
 
         if objects:
             self.addObjects(objects)
-        
-        self.params['boxHeight'] = { 'picName': 'boxht',
-                                     'value' : 0.3,
-                                     'description': 'Object box height'}
-        
-        self.params['boxWidth'] = { 'picName': 'boxwid',
-                                    'value' : 0.75,
-                                    'description': 'Object box width'}
-        
-        self.params['activeWidth'] = { 'picName': 'awid',
-                                       'value' : 0.1,
-                                       'description': 'Active lifeline width'}
-        
-        self.params['messageSpacing'] = { 'picName': 'spacing',
-                                   'value' : 0.25,
-                                   'description': 'Spacing between messages'}
-        
-        self.params['objectSpacing'] = { 'picName': 'movewid',
-                                   'value' : 0.75,
-                                   'description': 'Spacing between objects'}
-        
-        self.params['dashInterval'] = { 'picName': 'dashwid',
-                                   'value' : 0.05,
-                                   'description': 'Interval for dashed lines'}
-        
-        
-        self.params['diagramWidth'] = { 'picName': 'maxpswid',
-                                    'value' : 11,
-                                    'description': 'Maximum width of picture'}
-
-        self.params['diagramHeight'] = { 'picName': 'maxpsht',
-                                   'value' : 11,
-                                   'description': 'Maximum height of picture'}
-
-        self.params['underline'] = { 'picName': 'underline',
-                                     'value' : 1,
-                                     'description': 'Underline the name of objects'}
 
         for path in sys.path:
             testPath = os.path.join(path, 'sequenceplot', 'sequence.pic')
@@ -121,22 +85,6 @@ class SequenceDiagram:
         self.transactions.append(operation)
 
 
-    def printParams(self):
-        """
-        Generate readable output of params attribute.
-        
-        """
-        bufList = []
-        for key, value in self.params.iteritems():
-            bufList.append('   param Key: {0}'.format(key))
-            bufList.append(' description: {description}'.format(**value))            
-            bufList.append('pic variable: {picName}'.format(**value))
-            bufList.append('       value: {value}'.format(**value))
-            bufList.append('')
-
-        return '\n'.join(bufList)
-
-
     def setParam(self, key, value):
         """
         Set parameter key to value.
@@ -157,8 +105,7 @@ class SequenceDiagram:
         key -- parameter key name
         value -- value to set for key in params
         """
-        paramObj = self.params[key]
-        paramObj['value'] = value
+        self.params[key] = value
 
 
     def add(self, obj):
@@ -198,8 +145,7 @@ class SequenceDiagram:
         bufList.append('.PS')
         bufList.append('copy "{0}";'.format(self.picPath));
 
-        for k, v in self.params.iteritems():
-            bufList.append('{picName}={value};'.format(**v))
+        bufList.extend(self.params.genPicOperations())
         
         return bufList
 
