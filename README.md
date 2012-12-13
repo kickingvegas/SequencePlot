@@ -13,7 +13,7 @@ UML sequence diagrams are useful for describing communication between interactin
 * GNU Plotutils
 * Python 2.6+
 
-## Release Notes (v0.3)
+## Release Notes (v0.4)
 
 This code is stable enough to draw sequence diagrams. Come in, the water is fine.
 
