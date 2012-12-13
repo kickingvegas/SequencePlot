@@ -175,6 +175,15 @@ class SequenceObject:
         
     def callMethod(self, target, request, response=None, steps=0, requestSync=True, responseSync=False):
         """
+        Call a method on the target object, specifying a request and an optional response.
+
+        Args:
+        target -- target object to call method on
+        request -- request string
+        response -- response string (optional)
+        steps -- amount of steps or spacing between the request line and the response line, provided response is not None (default 0)
+        requestSync -- if True, the request line is synchronous (default True)
+        responseSync -- if True, the response line is synchronous (default False)
 
         """
 
@@ -204,6 +213,15 @@ class SequenceObject:
 
 
     def createInstance(self, target, instanceName, sync=True):
+        """
+        Create a new instance of the target object, labeling it with instanceName
+
+        Args:
+        target -- target object to create new instance of
+        instanceName -- label to assign to the new target
+        sync -- if True, draw instance creation synchronously, else asynchronous (default True)
+        
+        """
         if sync:
             self.parent.sync()
         else:
@@ -211,6 +229,14 @@ class SequenceObject:
         self.cmessage(target, instanceName)
 
     def destroyInstance(self, target, sync=True):
+        """
+        Destroy instance of the target object
+
+        Args:
+        target -- target object to create new instance of
+        sync -- if True, draw instance creation synchronously, else asynchronous (default True)
+        
+        """
         if sync:
             self.parent.sync()
         else:
