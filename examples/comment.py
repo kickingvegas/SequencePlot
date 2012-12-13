@@ -21,44 +21,22 @@ from sequenceplot import SequenceObject, SequenceDiagram
 client = SequenceObject('c: client')
 server = SequenceObject('s: server')
 
-
-
 # declare diagram instance, adding client and server to the diagram.
 diagram = SequenceDiagram([client, server])
-
-
 
 # configure diagram parameters
 diagram.setParam('objectSpacing', 1.75)
 
-#c1 = diagram.comment(server, "down 1 right", "wid 1 ht 0.7", 'mary is a tramp\nand a total\nfucking bitch.')
-
-# c1 = diagram.comment(server,
-#                      'mary is a tramp\nand a total\nfucking bitch.',
-#                      "down 1 right",
-#                      "wid 1 ht 0.7")
-
-c1 = diagram.comment(server,
-                     'mary is a tramp\nand a total\nfucking bitch.')
-
-
-
-# Start a frame named 'Login'
-frameName = diagram.beginFrame(client, 'Login')
-# Have the client call the method "login(username, password)" on the
-# server with then responds with "sessionID, userInfo".
-
-
 client.callMethod(server, 'login(username, password)', response='sessionID, userInfo')
 
-# End the previously declared frame
-diagram.endFrame(server, frameName)
+c1 = diagram.comment(server,
+                     'This is an\nexample comment\nconnected to the\nclient and server.',
+                     'down 0.35 left 0.5',
+                     'wid 1.5 ht 0.7')
 
+diagram.connectToComment(client, c1)
+diagram.step(5)
 
-#diagram.connectToComment(client, c1)
-
-
-# Render the diagram into an SVG file named "authentication.svg".
+# Render the diagram into an SVG file
 diagram.svg('comment')
-
 
